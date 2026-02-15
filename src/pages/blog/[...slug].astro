@@ -1,4 +1,6 @@
 ---
+export const prerender = true;
+
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 
@@ -15,6 +17,9 @@ const { Content } = await post.render();
 
 // URL поста
 const url = Astro.url;
+
+// ... дальше без изменений
+---
 
 // Даты
 const published = post.data.pubDate instanceof Date ? post.data.pubDate : new Date(post.data.pubDate);
