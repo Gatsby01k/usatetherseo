@@ -22,3 +22,6 @@ Bugs or hacks can compromise funds.
 ---
 
 Stablecoins are tools — not guaranteed safe assets.
+
+If you are specifically researching USAT, see our detailed analysis: [Is USAT Safe?](/blog/is-usat-safe/).
+
