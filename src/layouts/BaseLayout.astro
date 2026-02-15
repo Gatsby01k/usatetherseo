@@ -1,59 +1,114 @@
 ---
-const { title, description } = Astro.props;
-const siteTitle = title ? `${title} | usatether.io` : 'usatether.io';
-const siteDesc = description ?? 'Independent educational resource about stablecoins (USAT/USDT/USDC). Not affiliated with Tether.';
+export const prerender = true;
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+
+if (!post) {
+  throw new Error("Post not found.");
+}
+
+const { Content } = await post.render();
+
+const url = Astro.url;
+
+// Date handling
+const published =
+  post.data.pubDate instanceof Date
+    ? post.data.pubDate
+    : new Date(post.data.pubDate);
+
+const publishedISO = published.toISOString();
+const publishedHuman = published.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "2-digit",
+});
+
+// Tags
+const tags = Array.isArray(post.data.tags) ? post.data.tags : [];
+
+// JSON-LD
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: post.data.title,
+  description: post.data.description || "",
+  datePublished: publishedISO,
+  dateModified: publishedISO,
+  mainEntityOfPage: url.href,
+  author: { "@type": "Organization", name: "usatether.io" },
+  publisher: { "@type": "Organization", name: "usatether.io" },
+  keywords: tags.join(", "),
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: new URL("/", url).href },
+    { "@type": "ListItem", position: 2, name: "Blog", item: new URL("/blog/", url).href },
+    { "@type": "ListItem", position: 3, name: post.data.title, item: url.href },
+  ],
+};
+
+const ogImage = new URL(`/og/${post.slug}.png`, url).href;
 ---
-<!doctype html>
-<html lang="en">
+
+<BaseLayout title={post.data.title} description={post.data.description}>
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{siteTitle}</title>
-    <meta name="description" content={siteDesc} />
-    <link rel="stylesheet" href="/styles/global.css" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="canonical" href={Astro.url.href} />
-    <meta property="og:title" content={siteTitle} />
-    <meta property="og:description" content={siteDesc} />
-    <meta property="og:type" content="website" />
+    <link rel="canonical" href={url.href} />
 
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content={url.href} />
+    <meta property="og:title" content={post.data.title} />
+    <meta property="og:description" content={post.data.description ?? ""} />
+    <meta property="og:image" content={ogImage} />
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DEKZLM0V79"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-DEKZLM0V79', {
-        anonymize_ip: true
-      });
-    </script>
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={post.data.title} />
+    <meta name="twitter:description" content={post.data.description ?? ""} />
+    <meta name="twitter:image" content={ogImage} />
 
+    <script type="application/ld+json" set:html={JSON.stringify(articleJsonLd)} />
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
   </head>
-  <body>
-    <header class="site-header">
-      <div class="container">
-        <a class="brand" href="/">usatether.io</a>
-        <nav class="nav">
-          <a href="/about">About</a>
-          <a href="/blog">Blog</a>
-          <a href="/disclaimer">Disclaimer</a>
-          <a href="/privacy-policy">Privacy</a>
-          <a href="/contact">Contact</a>
-        </nav>
-      </div>
+
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">{post.data.title}</h1>
+
+      <p class="meta">
+        <time datetime={publishedISO}>{publishedHuman}</time>
+
+        {tags.length > 0 && (
+          <span class="tags">
+            {tags.map((t) => (
+              <a class="badge" href={`/blog/?tag=${encodeURIComponent(t)}`}>
+                {t}
+              </a>
+            ))}
+          </span>
+        )}
+      </p>
+
+      {post.data.description && (
+        <p class="post-lead">{post.data.description}</p>
+      )}
     </header>
 
-    <main class="container">
-      <slot />
-    </main>
-
-    <footer class="site-footer">
-      <div class="container">
-        <p class="muted">
-          Independent educational resource. Not affiliated with Tether. Content is informational only; not financial advice.
-        </p>
-      </div>
-    </footer>
-  </body>
-</html>
+    <div class="post-body">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
