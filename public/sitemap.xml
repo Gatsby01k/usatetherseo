@@ -1,23 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Main Pages -->
   <url><loc>https://usatether.io/</loc></url>
   <url><loc>https://usatether.io/about/</loc></url>
   <url><loc>https://usatether.io/contact/</loc></url>
   <url><loc>https://usatether.io/disclaimer/</loc></url>
   <url><loc>https://usatether.io/privacy-policy/</loc></url>
   <url><loc>https://usatether.io/blog/</loc></url>
+
+  <!-- Core Articles -->
   <url><loc>https://usatether.io/blog/what-is-usat/</loc></url>
   <url><loc>https://usatether.io/blog/usat-vs-usdt/</loc></url>
   <url><loc>https://usatether.io/blog/how-to-buy-usat/</loc></url>
   <url><loc>https://usatether.io/blog/what-is-usdt/</loc></url>
+
+  <!-- USAT Cluster -->
   <url><loc>https://usatether.io/blog/is-usat-safe/</loc></url>
   <url><loc>https://usatether.io/blog/usat-vs-usdc/</loc></url>
   <url><loc>https://usatether.io/blog/best-wallets-for-usat/</loc></url>
   <url><loc>https://usatether.io/blog/how-to-store-usat/</loc></url>
+
+  <!-- Stablecoin Education -->
   <url><loc>https://usatether.io/blog/stablecoin-risks-explained/</loc></url>
   <url><loc>https://usatether.io/blog/how-stablecoins-maintain-peg/</loc></url>
   <url><loc>https://usatether.io/blog/what-is-depeg/</loc></url>
   <url><loc>https://usatether.io/blog/trc20-vs-erc20/</loc></url>
   <url><loc>https://usatether.io/blog/stablecoin-regulation-2026/</loc></url>
   <url><loc>https://usatether.io/blog/stablecoin-security-checklist/</loc></url>
+
+  <!-- USDT Deep Cluster -->
+  <url><loc>https://usatether.io/blog/is-usdt-safe-2026/</loc></url>
+  <url><loc>https://usatether.io/blog/usdt-vs-usdc-2026/</loc></url>
+  <url><loc>https://usatether.io/blog/how-to-buy-usdt/</loc></url>
+  <url><loc>https://usatether.io/blog/usdt-trc20-vs-erc20/</loc></url>
+  <url><loc>https://usatether.io/blog/best-exchanges-for-usdt/</loc></url>
+
 </urlset>
