@@ -3,4 +3,4 @@ title: Contact
 description: Contact usatether.io.
 ---
 
-Email: **info@megaethlabs.org**
+Email: **info@usatether.io**
