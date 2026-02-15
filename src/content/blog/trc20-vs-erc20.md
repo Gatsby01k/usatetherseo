@@ -28,3 +28,6 @@ Cons:
 ---
 
 Choose based on use case.
+
+Network choice matters when storing tokens. See our guide on [How to Store USAT Safely](/blog/how-to-store-usat/).
+
