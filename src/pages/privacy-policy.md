@@ -12,4 +12,4 @@ description: Privacy policy for usatether.io.
 - We do not knowingly collect data from children.
 
 ## Contact
-If you have questions, contact: **info@megaethlabs.org**
+If you have questions, contact: **info@usatether.io**
