@@ -15,6 +15,18 @@ const siteDesc = description ?? 'Independent educational resource about stableco
     <meta property="og:title" content={siteTitle} />
     <meta property="og:description" content={siteDesc} />
     <meta property="og:type" content="website" />
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DEKZLM0V79"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-DEKZLM0V79', {
+        anonymize_ip: true
+      });
+    </script>
+
   </head>
   <body>
     <header class="site-header">
