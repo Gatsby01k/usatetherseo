@@ -12,9 +12,11 @@ const siteDesc = description ?? 'Independent educational resource about stableco
     <meta name="description" content={siteDesc} />
     <link rel="stylesheet" href="/styles/global.css" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href={Astro.url.href} />
     <meta property="og:title" content={siteTitle} />
     <meta property="og:description" content={siteDesc} />
     <meta property="og:type" content="website" />
+
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DEKZLM0V79"></script>
