@@ -13,19 +13,27 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
+
+// Защита, чтобы не было 500 в случае сбоя
+if (!post) {
+  throw new Error("Post not found in getStaticPaths props.");
+}
+
 const { Content } = await post.render();
 
 // URL поста
 const url = Astro.url;
 
-// ... дальше без изменений
----
-
 // Даты
 const published = post.data.pubDate instanceof Date ? post.data.pubDate : new Date(post.data.pubDate);
 const publishedISO = published.toISOString();
+const publishedHuman = published.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "2-digit",
+});
 
-// Теги (если есть)
+// Теги
 const tags = Array.isArray(post.data.tags) ? post.data.tags : [];
 
 // JSON-LD (Article + Breadcrumb)
@@ -52,11 +60,11 @@ const breadcrumbJsonLd = {
   ],
 };
 
-// (опционально) базовая OG картинка (лучше потом сделать динамическую /og/[slug].png)
+// OG image
 const ogImage = new URL(`/og/${post.slug}.png`, url).href;
 ---
+
 <BaseLayout title={post.data.title} description={post.data.description}>
-  <!-- SEO: canonical + OG/Twitter + JSON-LD -->
   <head>
     <link rel="canonical" href={url.href} />
 
@@ -80,13 +88,8 @@ const ogImage = new URL(`/og/${post.slug}.png`, url).href;
       <h1>{post.data.title}</h1>
 
       <p class="meta">
-        <time datetime={publishedISO}>
-          {published.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "2-digit",
-          })}
-        </time>
+        <time datetime={publishedISO}>{publishedHuman}</time>
+
         {tags.length > 0 && (
           <span class="tags">
             {tags.map((t) => (
