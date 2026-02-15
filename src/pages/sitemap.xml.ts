@@ -1,6 +1,8 @@
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
 
+export const prerender = true;
+
 function xmlEscape(str: string) {
   return str
     .replaceAll("&", "&amp;")
@@ -13,7 +15,6 @@ function xmlEscape(str: string) {
 export const GET: APIRoute = async ({ site }) => {
   const base = (site?.toString() || "https://usatether.io").replace(/\/$/, "");
 
-  // 1) Статические страницы (добавляй/убирай по необходимости)
   const staticPaths = [
     "/",
     "/about/",
@@ -25,52 +26,45 @@ export const GET: APIRoute = async ({ site }) => {
 
   const staticUrls = staticPaths.map((path) => ({
     loc: `${base}${path}`,
-    // lastmod можно не ставить для статических, но оставим единообразно
     lastmod: new Date().toISOString(),
     changefreq: path === "/" ? "weekly" : "monthly",
     priority: path === "/" ? 1.0 : 0.7,
   }));
 
-  // 2) Посты из коллекции blog
   const posts = await getCollection("blog");
 
-  const postUrls = posts
-    // по желанию: исключать будущие публикации
-    // .filter((p) => p.data.pubDate <= new Date())
-    .map((post) => {
-      const slug = post.slug.endsWith("/") ? post.slug : `${post.slug}/`;
-      return {
-        loc: `${base}/blog/${slug}`,
-        lastmod: (post.data.pubDate instanceof Date
-          ? post.data.pubDate
-          : new Date(post.data.pubDate)
-        ).toISOString(),
-        changefreq: "monthly",
-        priority: 0.6,
-      };
-    });
+  const postUrls = posts.map((post) => ({
+    loc: `${base}/blog/${post.slug}/`,
+    lastmod: (post.data.pubDate instanceof Date
+      ? post.data.pubDate
+      : new Date(post.data.pubDate)
+    ).toISOString(),
+    changefreq: "monthly",
+    priority: 0.6,
+  }));
 
   const urls = [...staticUrls, ...postUrls];
 
   const body =
-    `<?xml version="1.0" encoding="UTF-8"?>` +
-    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">` +
+    `<?xml version="1.0" encoding="UTF-8"?>\n` +
+    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
     urls
       .map(
         (u) =>
-          `<url>` +
-          `<loc>${xmlEscape(u.loc)}</loc>` +
-          `<lastmod>${u.lastmod}</lastmod>` +
-          `<changefreq>${u.changefreq}</changefreq>` +
-          `<priority>${u.priority.toFixed(1)}</priority>` +
-          `</url>`
+          `  <url>\n` +
+          `    <loc>${xmlEscape(u.loc)}</loc>\n` +
+          `    <lastmod>${u.lastmod}</lastmod>\n` +
+          `    <changefreq>${u.changefreq}</changefreq>\n` +
+          `    <priority>${u.priority.toFixed(1)}</priority>\n` +
+          `  </url>`
       )
-      .join("") +
-    `</urlset>`;
+      .join("\n") +
+    `\n</urlset>\n`;
 
   return new Response(body, {
     headers: {
-      "Content-Type": "application/xml; charset=utf-8",
+      "Content-Type": "application/xml",
+      "X-Content-Type-Options": "nosniff",
     },
   });
 };
