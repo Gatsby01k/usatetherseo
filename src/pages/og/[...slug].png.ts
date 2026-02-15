@@ -50,13 +50,15 @@ export const GET: APIRoute = async ({ params }) => {
                   type: "div",
                   props: {
                     style: {
-                      display: "inline-flex",
-                      alignSelf: "flex-start",
-                      padding: "10px 14px",
-                      borderRadius: "999px",
-                      background: "rgba(255,255,255,0.10)",
-                      fontSize: "22px",
-                    },
+  display: "flex",
+  alignSelf: "flex-start",
+  alignItems: "center",
+  padding: "10px 14px",
+  borderRadius: "999px",
+  background: "rgba(255,255,255,0.10)",
+  fontSize: "22px",
+},
+
                     children: "usatether.io • Blog",
                   },
                 },
