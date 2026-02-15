@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://usatether.io/sitemap-index.xml
