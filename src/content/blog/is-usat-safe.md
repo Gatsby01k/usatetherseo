@@ -63,3 +63,6 @@ Yes. Any stablecoin can temporarily depeg in extreme market conditions.
 ### Is USAT safer than USDT?
 Safety depends on structure, liquidity, and regulation — not just name.
 
+For a deeper explanation of general stablecoin risks, read our guide on [Stablecoin Risks Explained](/blog/stablecoin-risks-explained/).
+
+
