@@ -1,10 +1,28 @@
 ---
-const { title, description } = Astro.props;
+const {
+  title,
+  description,
+  canonical,
+  ogType,
+  ogImage,
+  ogTitle,
+  ogDescription,
+  twitterCard
+} = Astro.props;
 
 const siteTitle = title ? `${title} | usatether.io` : "usatether.io";
 const siteDesc =
   description ??
   "Independent educational resource about stablecoins (USAT/USDT/USDC). Not affiliated with Tether.";
+
+const canonicalUrl = canonical ?? Astro.url.href;
+
+const finalOgType = ogType ?? "website";
+const finalOgTitle = ogTitle ?? siteTitle;
+const finalOgDesc = ogDescription ?? siteDesc;
+const finalOgImage = ogImage ?? null;
+
+const finalTwitterCard = twitterCard ?? (finalOgImage ? "summary_large_image" : "summary");
 ---
 <!doctype html>
 <html lang="en">
@@ -17,11 +35,18 @@ const siteDesc =
     <link rel="stylesheet" href="/styles/global.css" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
-    <link rel="canonical" href={Astro.url.href} />
+    <link rel="canonical" href={canonicalUrl} />
 
-    <meta property="og:title" content={siteTitle} />
-    <meta property="og:description" content={siteDesc} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={finalOgType} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={finalOgTitle} />
+    <meta property="og:description" content={finalOgDesc} />
+    {finalOgImage && <meta property="og:image" content={finalOgImage} />}
+
+    <meta name="twitter:card" content={finalTwitterCard} />
+    <meta name="twitter:title" content={finalOgTitle} />
+    <meta name="twitter:description" content={finalOgDesc} />
+    {finalOgImage && <meta name="twitter:image" content={finalOgImage} />}
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DEKZLM0V79"></script>
@@ -31,6 +56,8 @@ const siteDesc =
       gtag('js', new Date());
       gtag('config', 'G-DEKZLM0V79', { anonymize_ip: true });
     </script>
+
+    <slot name="head" />
   </head>
 
   <body>
