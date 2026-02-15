@@ -1,5 +1,8 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig } from "astro/config";
+import vercel from "@astrojs/vercel/serverless";
 
 export default defineConfig({
-  site: 'https://usatether.io',
+  site: "https://usatether.io",
+  output: "server",
+  adapter: vercel(),
 });
