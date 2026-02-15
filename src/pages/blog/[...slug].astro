@@ -48,7 +48,7 @@ const breadcrumbJsonLd = {
 };
 
 // (опционально) базовая OG картинка (лучше потом сделать динамическую /og/[slug].png)
-const ogImage = new URL("/og-default.png", url).href;
+const ogImage = new URL(`/og/${post.slug}.png`, url).href;
 ---
 <BaseLayout title={post.data.title} description={post.data.description}>
   <!-- SEO: canonical + OG/Twitter + JSON-LD -->
