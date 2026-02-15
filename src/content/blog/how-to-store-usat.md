@@ -35,3 +35,5 @@ Send small amount first before large transfers.
 - Wrong network withdrawal
 - Fake token contracts
 - Sharing seed phrase
+
+Before storing, make sure you understand the risks in [Is USAT Safe?](/blog/is-usat-safe/).
